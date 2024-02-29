@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "479690723813",
+    "project_id": "pentia-chat",
+    "storage_bucket": "pentia-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479690723813:android:d712b95f898257b3141f0c",
+        "android_client_info": {
+          "package_name": "app.buzzkill.pentia_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQX5LeBdhkL4UZHWzKLPgjW1ar9JzgYFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

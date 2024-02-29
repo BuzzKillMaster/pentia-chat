@@ -24,13 +24,16 @@
         "foregroundImage": "./assets/pc-adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "app.buzzkill.pentia_chat"
     },
     "web": {
       "favicon": "./assets/pc-favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth"
     ],
     "extra": {
       "router": {
