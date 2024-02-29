@@ -16,19 +16,29 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.buzzkill.pentia-chat"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/pc-adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "app.buzzkill.pentia_chat"
     },
     "web": {
       "favicon": "./assets/pc-favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "553cbd0b-1502-4696-9cb7-c06477de6bfd"
+      }
+    }
   }
 }
