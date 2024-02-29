@@ -12,7 +12,20 @@
           "package_name": "app.buzzkill.pentia_chat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "479690723813-ha5qdiu948dnq2i0fj40dqm26sit11p3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.buzzkill.pentia_chat",
+            "certificate_hash": "314ea35874e6831cff73fda00f84eed25f81a148"
+          }
+        },
+        {
+          "client_id": "479690723813-3cbg2pbrekarju341chn0rf1mcddg6jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCQX5LeBdhkL4UZHWzKLPgjW1ar9JzgYFw"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479690723813-3cbg2pbrekarju341chn0rf1mcddg6jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
