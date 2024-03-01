@@ -1,7 +1,8 @@
-import {Pressable, SafeAreaView, StyleSheet, Text} from 'react-native';
-import {ReactElement, useContext} from "react";
-import {useRouter} from "expo-router";
-import {SessionContext} from "../../src/providers/SessionProvider";
+import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
+import {ReactElement, useEffect, useState} from "react";
+import firestore from '@react-native-firebase/firestore';
+import ChatGroupSchema from "../../src/schemas/ChatGroupSchema";
+import ChatGroupListItem from "../../src/components/ChatGroupListItem";
 
 /**
  * Render the home page of the application.
@@ -11,21 +12,47 @@ import {SessionContext} from "../../src/providers/SessionProvider";
  * @returns {ReactElement} The rendered home page component.
  */
 export default function HomePage(): ReactElement {
-    const router = useRouter()
+    const [chatGroups, setChatGroups] = useState<ChatGroupSchema[]>([])
+    const [isLoading, setIsLoading] = useState(false)
 
-    const {signOut} = useContext(SessionContext)
+    /**
+     * Refresh the chat groups list from the database.
+     */
+    const refreshChatGroups = () => {
+        setIsLoading(true)
+        const groups = firestore().collection("chat-groups")
+
+        groups.get().then(snapshot => {
+            const documents = snapshot.docs.map(doc => {
+                const group = doc.data() as ChatGroupSchema
+                return {...group, id: doc.id}
+            })
+
+            setChatGroups(documents)
+        }).catch(_ => {
+            Alert.alert("Uh-oh!", "It looks like we're having trouble fetching your chat groups. Please try again later.")
+        }).finally(
+            () => setIsLoading(false)
+        )
+    }
+
+    useEffect(() => {
+        refreshChatGroups()
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text>App</Text>
-
-            <Pressable onPress={() => router.push("/chat-rooms/general")}>
-                <Text>Open Chat</Text>
-            </Pressable>
-
-            <Pressable onPress={signOut}>
-                <Text>Sign Out</Text>
-            </Pressable>
+            <FlatList
+                data={chatGroups}
+                renderItem={({item}) => <ChatGroupListItem group={item} />}
+                keyExtractor={item => item.id}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                        onRefresh={refreshChatGroups}
+                    />
+                }
+            />
         </SafeAreaView>
     )
 }
@@ -33,8 +60,5 @@ export default function HomePage(): ReactElement {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap:  20
     }
 })
