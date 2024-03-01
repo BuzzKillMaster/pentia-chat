@@ -12,11 +12,9 @@ import {SessionContext} from "../../src/providers/SessionProvider";
  * @returns {ReactElement} - The Expo Router Stack or a redirect to the sign-in page.
  */
 export default function AppLayout(): ReactElement {
-    const {isSignedIn} = useContext(SessionContext)
+    const {user} = useContext(SessionContext)
 
-    if (!isSignedIn) {
-        return <Redirect href={"/sign-in"} />
-    }
+    if (!user) return <Redirect href={"/sign-in"} />
 
     return <Stack />
 }

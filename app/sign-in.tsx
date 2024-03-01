@@ -1,6 +1,7 @@
 import {Pressable, SafeAreaView, Text, StyleSheet} from 'react-native';
 import {ReactElement, useContext} from "react";
 import {SessionContext} from "../src/providers/SessionProvider";
+import {Redirect} from "expo-router";
 
 /**
  * Renders the sign-in screen.
@@ -8,7 +9,9 @@ import {SessionContext} from "../src/providers/SessionProvider";
  * @returns {ReactElement} - A React element representing the sign-in screen.
  */
 export default function SignIn(): ReactElement {
-    const {signIn} = useContext(SessionContext)
+    const {signIn, user} = useContext(SessionContext)
+
+    if (user) return <Redirect href={"/"} />
 
     return (
         <SafeAreaView style={styles.container}>

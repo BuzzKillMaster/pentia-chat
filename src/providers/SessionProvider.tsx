@@ -1,10 +1,16 @@
 import {createContext, ReactElement, ReactNode, useEffect, useState} from "react";
-import {useRouter} from "expo-router";
+import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
+import {GoogleSignin} from "@react-native-google-signin/google-signin";
+import {Alert} from "react-native";
+
+GoogleSignin.configure({
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
+})
 
 type SessionProviderContextType = {
     signIn: () => void
     signOut: () => void
-    isSignedIn: boolean
+    user: FirebaseAuthTypes.User | null
 }
 
 export const SessionContext = createContext<SessionProviderContextType>({} as SessionProviderContextType)
@@ -17,21 +23,28 @@ export const SessionContext = createContext<SessionProviderContextType>({} as Se
  * @returns {ReactElement} - The rendered child wrapped in a Session Context Provider.
  */
 export default function SessionProvider({children}: {children: ReactNode}): ReactElement {
-    const router = useRouter()
-
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    // TODO: Use this to display a loading screen where applicable
+    const [isLoading, setIsLoading] = useState(true)
+    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
 
     useEffect(() => {
-        if (isSignedIn) {
-            router.replace("/")
-        } else {
-            router.replace("/sign-in")
-        }
-    }, [isSignedIn])
+        // Implicitly returns its own cleanup function
+        return auth().onAuthStateChanged((user) => {
+            setUser(user)
+            if (isLoading) setIsLoading(false)
+        })
+    }, [])
 
-    const signIn = () => {
-        // TODO: implement sign-in logic
-        setIsSignedIn(true)
+    // TODO: Implement Facebook sign-in
+    const signIn = async () => {
+        try {
+            await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true})
+            const {idToken} = await GoogleSignin.signIn()
+            const credential = auth.GoogleAuthProvider.credential(idToken)
+            await auth().signInWithCredential(credential)
+        } catch (error) {
+            Alert.alert('Uh-oh!', "It looks like we're having trouble signing you in. Please try again later.")
+        }
     }
 
     const signOut = () => {
@@ -39,11 +52,14 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
         setIsSignedIn(false)
     }
 
+    // Guard against rendering the children before the session state is loaded
+    if (isLoading) return <></>
+
     return (
         <SessionContext.Provider value={{
             signIn,
             signOut,
-            isSignedIn,
+            user
         }}>
             {children}
         </SessionContext.Provider>
