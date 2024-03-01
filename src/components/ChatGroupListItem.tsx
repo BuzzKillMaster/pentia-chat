@@ -16,7 +16,7 @@ export default function ChatGroupListItem({group}: {group: ChatGroupSchema}): Re
     const router = useRouter()
 
     return (
-        <Pressable style={styles.container} onPress={() => router.push("/chat-rooms/" + group.id)}>
+        <Pressable style={styles.container} onPress={() => router.push("/chat-groups/" + group.id)}>
             <View style={styles.groupInfo}>
                 <Text style={styles.groupName}>{group.name}</Text>
                 <Text>{group.description}</Text>
