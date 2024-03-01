@@ -2,6 +2,7 @@ import {createContext, ReactElement, ReactNode, useEffect, useState} from "react
 import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import {Alert} from "react-native";
+import LoadingScreen from "../components/LoadingScreen";
 
 GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID
@@ -37,6 +38,8 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
 
     // TODO: Implement Facebook sign-in
     const signIn = async () => {
+        setIsLoading(true)
+
         try {
             await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true})
             const {idToken} = await GoogleSignin.signIn()
@@ -44,15 +47,15 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
             await auth().signInWithCredential(credential)
         } catch (error) {
             Alert.alert('Uh-oh!', "It looks like we're having trouble signing you in. Please try again later.")
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const signOut = async () => {
+        setIsLoading(true)
         await auth().signOut()
     }
-
-    // Guard against rendering the children before the session state is loaded
-    if (isLoading) return <></>
 
     return (
         <SessionContext.Provider value={{
@@ -60,6 +63,7 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
             signOut,
             user
         }}>
+            {isLoading && <LoadingScreen />}
             {children}
         </SessionContext.Provider>
     )
