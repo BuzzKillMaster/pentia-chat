@@ -47,9 +47,8 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
         }
     }
 
-    const signOut = () => {
-        // TODO: implement sign-out logic
-        setIsSignedIn(false)
+    const signOut = async () => {
+        await auth().signOut()
     }
 
     // Guard against rendering the children before the session state is loaded
