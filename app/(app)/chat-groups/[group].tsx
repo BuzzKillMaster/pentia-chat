@@ -28,6 +28,7 @@ export default function ChatGroup(): ReactElement {
             .doc(group)
             .collection("messages")
             .limit(MESSAGES_PER_PAGE)
+            .orderBy("created_at", "asc")
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map(doc => {
                     const message = doc.data()
