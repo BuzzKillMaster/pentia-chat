@@ -4,6 +4,7 @@ import {useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
 import ChatMessage from "../../../src/components/ChatMessage";
 import ChatMessageInputField from "../../../src/components/ChatMessageInputField";
+import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocumentToChatMessage";
 
 const MESSAGES_PER_PAGE = 50
 
@@ -27,20 +28,35 @@ export default function ChatGroup(): ReactElement {
             .limit(MESSAGES_PER_PAGE)
             .orderBy("created_at", "desc")
             .onSnapshot((snapshot) => {
-                const messages = snapshot.docs.map(doc => {
-                    const message = doc.data()
+                const messages = snapshot.docs.map(firestoreDocumentToChatMessage)
 
-                    return {
-                        ...message,
-                        id: doc.id,
-                        createdAt: doc.data().created_at?.toDate()
-                    } as ChatMessageSchema
-                })
                 setMessages(messages)
             }, _ => {
                 Alert.alert("Uh-oh!", "It looks like we're having trouble fetching the messages. Please try again later.")
             })
     }, [])
+
+    /**
+     * Fetches more messages from the chat group's collection in Firestore.
+     *
+     * @returns {Promise<void>} A Promise that resolves when the messages are fetched and processed.
+     */
+    const fetchMoreMessages = async (): Promise<void> => {
+        const lastMessage = messages[messages.length - 1]
+
+        const snapshot = await firestore()
+            .collection("chat-groups")
+            .doc(group)
+            .collection("messages")
+            .limit(MESSAGES_PER_PAGE)
+            .orderBy("created_at", "desc")
+            .startAfter(lastMessage.createdAt)
+            .get()
+
+        const newMessages = snapshot.docs.map(firestoreDocumentToChatMessage)
+
+        setMessages([...messages, ...newMessages])
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -50,6 +66,7 @@ export default function ChatGroup(): ReactElement {
                 renderItem={({item}) => <ChatMessage message={item} />}
                 keyExtractor={item => item.id}
                 inverted={true}
+                onEndReached={fetchMoreMessages}
             />
 
             <ChatMessageInputField group={group} />
