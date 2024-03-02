@@ -52,7 +52,7 @@ export default function ChatMessageInputField({group}: { group: string | undefin
                 senderName: user?.displayName,
                 senderAvatar: user?.photoURL,
                 senderId: user?.uid,
-                created_at: firestore.FieldValue.serverTimestamp()
+                createdAt: firestore.FieldValue.serverTimestamp()
             }).catch(_ => {
             Alert.alert("Uh-oh!", "It looks like we're having trouble sending your message. Please try again later.")
         }).then(_ => {

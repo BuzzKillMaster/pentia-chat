@@ -12,6 +12,6 @@ export default function firestoreDocumentToChatMessage(doc: FirebaseFirestoreTyp
     return {
         ...message,
         id: doc.id,
-        createdAt: doc.data().created_at?.toDate()
+        createdAt: doc.data().createdAt?.toDate()
     } as ChatMessageSchema
 }

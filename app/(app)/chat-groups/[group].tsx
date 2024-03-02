@@ -26,7 +26,7 @@ export default function ChatGroup(): ReactElement {
             .doc(group)
             .collection("messages")
             .limit(MESSAGES_PER_PAGE)
-            .orderBy("created_at", "desc")
+            .orderBy("createdAt", "desc")
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map(firestoreDocumentToChatMessage)
 
@@ -49,7 +49,7 @@ export default function ChatGroup(): ReactElement {
             .doc(group)
             .collection("messages")
             .limit(MESSAGES_PER_PAGE)
-            .orderBy("created_at", "desc")
+            .orderBy("createdAt", "desc")
             .startAfter(lastMessage.createdAt)
             .get()
 
