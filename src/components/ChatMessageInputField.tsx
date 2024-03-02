@@ -21,6 +21,9 @@ export default function ChatMessageInputField({group}: { group: string | undefin
      * @param {string} message - The contents of the message to send.
      */
     const sendMessage = async (message: string): Promise<void> => {
+        message = message.trim()
+        if (message === "") return
+
         firestore()
             .collection("chat-groups")
             .doc(group)
