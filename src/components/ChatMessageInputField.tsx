@@ -1,9 +1,10 @@
 import {ReactElement, useContext, useEffect, useState} from "react";
-import {Alert, StyleSheet, TextInput} from "react-native";
+import {Alert, Pressable, StyleSheet, TextInput, View} from "react-native";
 import {SessionContext} from "../providers/SessionProvider";
 import firestore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from 'expo-notifications';
+import {Ionicons} from "@expo/vector-icons";
 
 /**
  * Renders an input field for sending messages in a chat group.
@@ -97,21 +98,49 @@ export default function ChatMessageInputField({group}: { group: string | undefin
     }
 
     return (
-        <TextInput
-            style={styles.input}
-            placeholder={"Type a message"}
-            value={messageContents}
-            onChangeText={setMessageContents}
-            blurOnSubmit={false}
-            onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
-        />
+        <View style={styles.container}>
+            <Pressable style={styles.iconButton}>
+                <Ionicons name="camera" size={24} />
+            </Pressable>
+
+            <Pressable style={styles.iconButton}>
+                <Ionicons name="image" size={24} />
+            </Pressable>
+
+            <TextInput
+                style={styles.input}
+                placeholder={"Type a message"}
+                value={messageContents}
+                onChangeText={setMessageContents}
+                blurOnSubmit={false}
+                onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
+            />
+
+            <Pressable style={styles.iconButton} onPress={() => sendMessage(messageContents)}>
+                <Ionicons name="send" size={24} />
+            </Pressable>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        backgroundColor: '#fff',
+        borderTopWidth: 1,
+        borderTopColor: '#ddd',
+    },
+
+    iconButton: {
+        padding: 10,
+        justifyContent: 'center',
+    },
+
     input: {
         width: '100%',
-        padding: 20,
+        padding: 10,
         backgroundColor: '#eee',
+        flexShrink: 1,
     },
 })
