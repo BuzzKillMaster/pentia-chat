@@ -1,5 +1,6 @@
 import {ReactElement, useEffect, useState} from "react";
-import {StyleSheet, SafeAreaView, View, Alert} from "react-native";
+import {StyleSheet, SafeAreaView, Alert} from "react-native";
+import {StyleSheet, SafeAreaView, Alert, FlatList} from "react-native";
 import {useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
 import ChatMessage from "../../../src/components/ChatMessage";
@@ -18,6 +19,7 @@ export default function ChatGroup(): ReactElement {
     const [messages, setMessages] = useState<ChatMessageChema[]>([])
 
     useEffect(() => {
+        // Implicitly returns its own cleanup function
         return firestore()
             .collection("chat-groups")
             .doc(group)
@@ -25,13 +27,13 @@ export default function ChatGroup(): ReactElement {
             .limit(MESSAGES_PER_PAGE)
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map(doc => {
-                    const message = doc.data() as ChatMessageChema
+                    const message = doc.data()
 
                     return {
                         ...message,
                         id: doc.id,
-                        createdAt: doc.data().created_at.toDate()
-                    }
+                        createdAt: doc.data().created_at?.toDate()
+                    } as ChatMessageSchema
                 })
                 setMessages(messages)
             }, _ => {
@@ -41,11 +43,12 @@ export default function ChatGroup(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.conversation}>
-                {messages.map(message =>  (
-                    <ChatMessage key={message.id} message={message} />
-                ))}
-            </View>
+            <FlatList
+                style={styles.conversation}
+                data={messages}
+                renderItem={({item}) => <ChatMessage message={item} />}
+                keyExtractor={item => item.id}
+            />
         </SafeAreaView>
     )
 }

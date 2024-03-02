@@ -4,6 +4,8 @@
 interface ChatMessageSchema {
     id: string
     contents: string
-    sender: string
+    senderName: string
+    senderAvatar: string
+    senderId: string
     createdAt?: Date
 }
