@@ -5,6 +5,10 @@ import firestore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from 'expo-notifications';
 import {Ionicons} from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker';
+import storage from '@react-native-firebase/storage';
+import {ImagePickerResult} from "expo-image-picker";
+import ChatMessageType from "../enums/ChatMessageType";
 
 /**
  * Renders an input field for sending messages in a chat group.
@@ -49,6 +53,7 @@ export default function ChatMessageInputField({group}: { group: string | undefin
             .collection("messages")
             .add({
                 contents: message,
+                mediaType: ChatMessageType.TEXT,
                 senderName: user?.displayName,
                 senderAvatar: user?.photoURL,
                 senderId: user?.uid,
@@ -97,13 +102,75 @@ export default function ChatMessageInputField({group}: { group: string | undefin
         ])
     }
 
+
+    /**
+     * Uploads an image picker result to storage and adds a new message to the chat group
+     * @param {ImagePickerResult | void} result - The result object returned from the image picker. If void or the result is canceled, no action will be taken.
+     */
+    const uploadImagePickerResult = (result: ImagePickerResult | void) => {
+        if (!result || result.canceled) return
+
+        const uri = result.assets[0].uri
+        const path = group + "/" + new Date().getTime()
+
+        const ref = storage().ref("chat-images").child(path)
+
+        ref.putFile(uri).catch(_ => {
+            Alert.alert("Uh-oh!", "It looks like we're having trouble uploading your image. Please try again later.")
+        }).then(async () => {
+            const url = await ref.getDownloadURL()
+
+        firestore()
+            .collection("chat-groups")
+            .doc(group)
+            .collection("messages")
+            .add({
+                contents: url,
+                mediaType: ChatMessageType.IMAGE,
+                senderName: user?.displayName,
+                senderAvatar: user?.photoURL,
+                senderId: user?.uid,
+                createdAt: firestore.FieldValue.serverTimestamp()
+            }).catch(_ => {
+                Alert.alert("Uh-oh!", "It looks like we're having trouble sending your message. Please try again later.")
+            }).then(_ => {
+                checkUserWantsNotifications()
+            })
+        })
+    }
+
+    /**
+     * Opens the image library and allows the user to select an image.
+     */
+    const pickImage = () => {
+        ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+        }).catch(_ => {
+            Alert.alert("Uh-oh!", "It looks like we were unable to open your gallery. Please try again later.")
+        }).then(uploadImagePickerResult)
+    }
+
+
+    /**
+     * Opens the camera and allows the user to take a photo.
+     */
+    const takePhoto = () => {
+        ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+        }).catch(_ => {
+            Alert.alert("Uh-oh!", "It looks like we were unable to open your camera. Please try again later.")
+        }).then(uploadImagePickerResult)
+    }
+
     return (
         <View style={styles.container}>
-            <Pressable style={styles.iconButton}>
+            <Pressable style={styles.iconButton} onPress={takePhoto}>
                 <Ionicons name="camera" size={24} />
             </Pressable>
 
-            <Pressable style={styles.iconButton}>
+            <Pressable style={styles.iconButton} onPress={pickImage}>
                 <Ionicons name="image" size={24} />
             </Pressable>
 

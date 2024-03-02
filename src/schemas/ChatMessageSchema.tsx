@@ -4,6 +4,7 @@
 interface ChatMessageSchema {
     id: string
     contents: string
+    mediaType: string
     senderName: string
     senderAvatar: string
     senderId: string
