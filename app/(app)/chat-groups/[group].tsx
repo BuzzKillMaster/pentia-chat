@@ -25,7 +25,7 @@ export default function ChatGroup(): ReactElement {
             .doc(group)
             .collection("messages")
             .limit(MESSAGES_PER_PAGE)
-            .orderBy("created_at", "asc")
+            .orderBy("created_at", "desc")
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map(doc => {
                     const message = doc.data()
@@ -49,8 +49,8 @@ export default function ChatGroup(): ReactElement {
                 data={messages}
                 renderItem={({item}) => <ChatMessage message={item} />}
                 keyExtractor={item => item.id}
+                inverted={true}
             />
-
 
             <ChatMessageInputField group={group} />
         </SafeAreaView>
