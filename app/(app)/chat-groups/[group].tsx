@@ -5,6 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 import ChatMessage from "../../../src/components/ChatMessage";
 import ChatMessageInputField from "../../../src/components/ChatMessageInputField";
 import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocumentToChatMessage";
+import ChatMessageSchema from "../../../src/schemas/ChatMessageSchema";
 
 const MESSAGES_PER_PAGE = 50
 

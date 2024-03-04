@@ -10,3 +10,5 @@ interface ChatMessageSchema {
     senderId: string
     createdAt?: Date
 }
+
+export default ChatMessageSchema

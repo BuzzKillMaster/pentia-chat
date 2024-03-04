@@ -2,6 +2,7 @@ import {ReactElement, useContext} from "react";
 import {View, Text, Image} from "react-native";
 import {SessionContext} from "../providers/SessionProvider";
 import ChatMessageType from "../enums/ChatMessageType";
+import ChatMessageSchema from "../schemas/ChatMessageSchema";
 
 /**
  * Renders a chat message, including the sender's name and avatar.

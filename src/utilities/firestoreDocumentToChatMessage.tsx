@@ -1,4 +1,5 @@
 import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
+import ChatMessageSchema from "../schemas/ChatMessageSchema";
 
 /**
  * Converts a Firestore document to a ChatMessageSchema object.
