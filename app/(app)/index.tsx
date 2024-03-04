@@ -1,9 +1,10 @@
-import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
-import {ReactElement, useEffect, useState} from "react";
+import {Alert, Text, FlatList, Pressable, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
+import {ReactElement, useContext, useEffect, useState} from "react";
 import firestore from '@react-native-firebase/firestore';
 import ChatGroupSchema from "../../src/schemas/ChatGroupSchema";
 import ChatGroupListItem from "../../src/components/ChatGroupListItem";
 import {Stack} from "expo-router";
+import {SessionContext} from "../../src/providers/SessionProvider";
 
 /**
  * Render the home page of the application.
@@ -13,6 +14,8 @@ import {Stack} from "expo-router";
  * @returns {ReactElement} The rendered home page component.
  */
 export default function HomePage(): ReactElement {
+    const {signOut} = useContext(SessionContext)
+
     const [chatGroups, setChatGroups] = useState<ChatGroupSchema[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
@@ -43,7 +46,16 @@ export default function HomePage(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Stack.Screen options={{title: "Chat Groups"}} />
+            <Stack.Screen options={{
+                title: "Chat Groups",
+                headerRight: () => {
+                    return (
+                        <Pressable onPress={signOut}>
+                            <Text>Sign out</Text>
+                        </Pressable>
+                    )
+                }
+            }} />
 
             <FlatList
                 data={chatGroups}
