@@ -3,6 +3,7 @@ import {ReactElement, useEffect, useState} from "react";
 import firestore from '@react-native-firebase/firestore';
 import ChatGroupSchema from "../../src/schemas/ChatGroupSchema";
 import ChatGroupListItem from "../../src/components/ChatGroupListItem";
+import {Stack} from "expo-router";
 
 /**
  * Render the home page of the application.
@@ -42,6 +43,8 @@ export default function HomePage(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Stack.Screen options={{title: "Chat Groups"}} />
+
             <FlatList
                 data={chatGroups}
                 renderItem={({item}) => <ChatGroupListItem group={item} />}

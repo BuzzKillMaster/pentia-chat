@@ -15,8 +15,20 @@ import {Ionicons} from "@expo/vector-icons";
 export default function ChatGroupListItem({group}: {group: ChatGroupSchema}): ReactElement {
     const router = useRouter()
 
+    /**
+     * Navigates to the chat group page with the specified group ID, along with the group name.
+     */
+    const navigateToChatGroup = () => {
+        router.push({
+            pathname: "/chat-groups/" + group.id,
+            params: {
+                name: group.name
+            }
+        })
+    }
+
     return (
-        <Pressable style={styles.container} onPress={() => router.push("/chat-groups/" + group.id)}>
+        <Pressable style={styles.container} onPress={navigateToChatGroup}>
             <View style={styles.groupInfo}>
                 <Text style={styles.groupName}>{group.name}</Text>
                 <Text>{group.description}</Text>

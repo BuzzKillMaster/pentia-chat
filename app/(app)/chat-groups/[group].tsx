@@ -1,6 +1,6 @@
 import {ReactElement, useEffect, useState} from "react";
 import {StyleSheet, SafeAreaView, Alert, FlatList} from "react-native";
-import {useLocalSearchParams} from "expo-router";
+import {Stack, useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
 import ChatMessage from "../../../src/components/ChatMessage";
 import ChatMessageInputField from "../../../src/components/ChatMessageInputField";
@@ -16,7 +16,7 @@ const MESSAGES_PER_PAGE = 50
  * @returns {ReactElement} - A React element representing the chat room and its contents.
  */
 export default function ChatGroup(): ReactElement {
-    const {group} = useLocalSearchParams<{group: string}>()
+    const {group, name} = useLocalSearchParams<{group: string, name: string}>()
 
     const [messages, setMessages] = useState<ChatMessageSchema[]>([])
 
@@ -61,6 +61,12 @@ export default function ChatGroup(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Stack.Screen
+                options={{
+                    title: name,
+                }}
+            />
+
             <FlatList
                 style={styles.conversation}
                 data={messages}
