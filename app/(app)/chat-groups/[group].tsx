@@ -6,6 +6,7 @@ import ChatMessage from "../../../src/components/ChatMessage";
 import ChatMessageInputField from "../../../src/components/ChatMessageInputField";
 import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocumentToChatMessage";
 import ChatMessageSchema from "../../../src/schemas/ChatMessageSchema";
+import EmptyStateScreen from "../../../src/components/EmptyStateScreen";
 
 const MESSAGES_PER_PAGE = 50
 
@@ -67,14 +68,24 @@ export default function ChatGroup(): ReactElement {
                 }}
             />
 
-            <FlatList
-                style={styles.conversation}
-                data={messages}
-                renderItem={({item}) => <ChatMessage message={item} />}
-                keyExtractor={item => item.id}
-                inverted={true}
-                onEndReached={fetchMoreMessages}
-            />
+            {messages.length === 0 && (
+                <EmptyStateScreen
+                    image={require("../../../assets/images/no-messages.png")}
+                    title={"No messages yet"}
+                    message={"Be the first to send a message in this chat group!"}
+                />
+            )}
+
+            {messages.length > 0 && (
+                <FlatList
+                    style={styles.conversation}
+                    data={messages}
+                    renderItem={({item}) => <ChatMessage message={item} />}
+                    keyExtractor={item => item.id}
+                    inverted={true}
+                    onEndReached={fetchMoreMessages}
+                />
+            )}
 
             <ChatMessageInputField group={group} />
         </SafeAreaView>
