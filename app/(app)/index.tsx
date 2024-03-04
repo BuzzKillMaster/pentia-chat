@@ -21,7 +21,7 @@ export default function HomePage(): ReactElement {
      */
     const refreshChatGroups = () => {
         setIsLoading(true)
-        const groups = firestore().collection("chat-groups")
+        const groups = firestore().collection("chat-groups").orderBy("lastMessageAt", "desc")
 
         groups.get().then(snapshot => {
             const documents = snapshot.docs.map(doc => {
