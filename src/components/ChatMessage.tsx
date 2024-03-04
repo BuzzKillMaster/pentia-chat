@@ -1,5 +1,5 @@
 import {ReactElement, useContext} from "react";
-import {View, Text, Image} from "react-native";
+import {View, Text, Image, StyleSheet} from "react-native";
 import {SessionContext} from "../providers/SessionProvider";
 import ChatMessageType from "../enums/ChatMessageType";
 import ChatMessageSchema from "../schemas/ChatMessageSchema";
@@ -16,27 +16,109 @@ export default function ChatMessage({message}: { message: ChatMessageSchema }): 
     /**
      * Renders the contents of the message, based on its media type.
      */
-    const renderContents = () => {
+    const renderContents = (): ReactElement => {
         switch (message.mediaType) {
             case ChatMessageType.TEXT:
-                return <Text>{message.contents}</Text>
+                return <Text style={{
+                    ...styles.message,
+                    backgroundColor: message.senderId === user?.uid ? "#00824b" : "#4b0082",
+                }}>{message.contents}</Text>
             case ChatMessageType.IMAGE:
                 // TODO: Allow users to tap on the image to view it in full screen.
-                return <Image source={{uri: message.contents}} style={{width: 200, height: 200}} />
+                return <Image source={{uri: message.contents}} style={styles.image} />
             default:
                 return <Text>Unknown message type</Text>
         }
     }
 
+    /**
+     * Renders the sender information, including their avatar and name.
+     *
+     * @returns {ReactElement} The rendered sender information component.
+     */
+    const renderSenderInfo = (): ReactElement => {
+        return (
+            <View style={styles.senderInfoContainer}>
+                <Image source={{uri: message.senderAvatar}} style={styles.senderAvatar} />
+                <Text style={styles.senderName}>{message.senderName}</Text>
+            </View>
+        )
+    }
+
+    /**
+     * Renders a timestamp for a given message in a HH:MM format.
+     *
+     * @return {ReactElement} The rendered timestamp component.
+     */
+    const renderTimestamp = (): ReactElement => {
+        return (
+            <Text style={styles.timestamp}>{
+                message.createdAt?.toISOString()
+                    .split("T")[1]
+                    .split(".")[0]
+                    .split(":")
+                    .slice(0, 2)
+                    .join(":")
+            }</Text>
+        )
+    }
+
     return (
         <View style={{
-            flex: 1,
+            ...styles.container,
             alignItems: message.senderId === user?.uid ? "flex-end" : "flex-start",
         }}>
+            {message.senderId !== user?.uid && renderSenderInfo()}
+
             {renderContents()}
-            <Text>{message.createdAt?.toISOString()}</Text>
-            <Text>{message.senderName}</Text>
-            <Image source={{uri: message.senderAvatar}} style={{width: 50, height: 50}} />
+            {renderTimestamp()}
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        margin: 16,
+        gap: 8,
+    },
+
+    text: {
+        fontSize: 16,
+    },
+
+    image: {
+        width: 200,
+        height: 200,
+        borderRadius: 5,
+    },
+
+    senderInfoContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+
+    senderName: {
+        fontSize: 14,
+        fontWeight: "500",
+    },
+
+    senderAvatar: {
+        width: 25,
+        height: 25,
+        borderRadius: 5,
+    },
+
+    timestamp: {
+        fontSize: 12,
+    },
+
+    message: {
+        fontSize: 16,
+        padding: 12,
+        color: "#fff",
+        borderRadius: 5,
+        maxWidth: "80%",
+    }
+})
