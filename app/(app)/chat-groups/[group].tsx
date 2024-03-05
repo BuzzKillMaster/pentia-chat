@@ -1,4 +1,4 @@
-import {ReactElement, useEffect, useState} from "react";
+import {ReactElement, useCallback, useEffect, useState} from "react";
 import {StyleSheet, SafeAreaView, Alert, FlatList, ActivityIndicator} from "react-native";
 import {Stack, useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
@@ -70,6 +70,16 @@ export default function ChatGroup(): ReactElement {
         setMessages([...messages, ...newMessages])
     }
 
+    /**
+     * Renders a list item for a chat message.
+     *
+     * @param {ChatMessageSchema} message - The properties for the list item.
+     * @returns {ReactElement} The rendered list item.
+     */
+    const renderListItem = useCallback((message: ChatMessageSchema): ReactElement => {
+        return <ChatMessage message={message} />
+    }, [])
+
     return (
         <SafeAreaView style={styles.container}>
             <Stack.Screen
@@ -96,7 +106,7 @@ export default function ChatGroup(): ReactElement {
                 <FlatList
                     style={styles.conversation}
                     data={messages}
-                    renderItem={({item}) => <ChatMessage message={item} />}
+                    renderItem={({item}) => renderListItem(item)}
                     keyExtractor={item => item.id}
                     inverted={true}
                     onEndReached={fetchMoreMessages}
