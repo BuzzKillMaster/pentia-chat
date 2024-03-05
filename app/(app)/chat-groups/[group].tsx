@@ -1,5 +1,5 @@
 import {ReactElement, useEffect, useState} from "react";
-import {StyleSheet, SafeAreaView, Alert, FlatList} from "react-native";
+import {StyleSheet, SafeAreaView, Alert, FlatList, ActivityIndicator} from "react-native";
 import {Stack, useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
 import ChatMessage from "../../../src/components/ChatMessage";
@@ -19,7 +19,8 @@ const MESSAGES_PER_PAGE = 50
 export default function ChatGroup(): ReactElement {
     const {group, name} = useLocalSearchParams<{group: string, name: string}>()
 
-    const [messages, setMessages] = useState<ChatMessageSchema[]>([])
+    const [messages, setMessages] = useState<ChatMessageSchema[] | null>(null)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         // Implicitly returns its own cleanup function
@@ -38,13 +39,19 @@ export default function ChatGroup(): ReactElement {
             })
     }, [])
 
+    useEffect(() => {
+        if (messages !== null) {
+            setIsLoading(false)
+        }
+    }, [messages])
+
     /**
      * Fetches more messages from the chat group's collection in Firestore.
      *
      * @returns {Promise<void>} A Promise that resolves when the messages are fetched and processed.
      */
     const fetchMoreMessages = async (): Promise<void> => {
-        if (messages.length % MESSAGES_PER_PAGE !== 0) return
+        if (messages === null || messages.length % MESSAGES_PER_PAGE !== 0) return
 
         const lastMessage = messages[messages.length - 1]
 
@@ -71,7 +78,13 @@ export default function ChatGroup(): ReactElement {
                 }}
             />
 
-            {messages.length === 0 && (
+            {isLoading && (
+                <ActivityIndicator size={"large"} style={{
+                    flex: 1,
+                }}></ActivityIndicator>
+            )}
+
+            {messages?.length === 0 && (
                 <EmptyStateScreen
                     image={require("../../../assets/images/no-messages.png")}
                     title={"No messages yet"}
@@ -79,7 +92,7 @@ export default function ChatGroup(): ReactElement {
                 />
             )}
 
-            {messages.length > 0 && (
+            {(messages !== null && messages.length > 0) && (
                 <FlatList
                     style={styles.conversation}
                     data={messages}
