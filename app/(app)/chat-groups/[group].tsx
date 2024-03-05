@@ -7,6 +7,7 @@ import ChatMessageInputField from "../../../src/components/ChatMessageInputField
 import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocumentToChatMessage";
 import ChatMessageSchema from "../../../src/schemas/ChatMessageSchema";
 import EmptyStateScreen from "../../../src/components/EmptyStateScreen";
+import LightBoxComponent from "../../../src/components/LightBoxComponent";
 
 const MESSAGES_PER_PAGE = 50
 
@@ -20,6 +21,7 @@ export default function ChatGroup(): ReactElement {
     const {group, name} = useLocalSearchParams<{group: string, name: string}>()
 
     const [messages, setMessages] = useState<ChatMessageSchema[]>([])
+    const [lightBoxImageUrl, setLightBoxImageUrl] = useState<string | null>(null)
 
     useEffect(() => {
         // Implicitly returns its own cleanup function
@@ -71,6 +73,10 @@ export default function ChatGroup(): ReactElement {
                 }}
             />
 
+            {lightBoxImageUrl && (
+                <LightBoxComponent imageUrl={lightBoxImageUrl} setImage={setLightBoxImageUrl} />
+            )}
+
             {messages.length === 0 && (
                 <EmptyStateScreen
                     image={require("../../../assets/images/no-messages.png")}
@@ -83,7 +89,7 @@ export default function ChatGroup(): ReactElement {
                 <FlatList
                     style={styles.conversation}
                     data={messages}
-                    renderItem={({item}) => <ChatMessage message={item} />}
+                    renderItem={({item}) => <ChatMessage message={item} setImage={setLightBoxImageUrl} />}
                     keyExtractor={item => item.id}
                     inverted={true}
                     onEndReached={fetchMoreMessages}

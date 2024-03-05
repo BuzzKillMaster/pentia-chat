@@ -1,16 +1,22 @@
-import {ReactElement, useContext} from "react";
-import {View, Text, Image, StyleSheet} from "react-native";
+import {Dispatch, ReactElement, SetStateAction, useContext} from "react";
+import {View, Text, Image, StyleSheet, Pressable} from "react-native";
 import {SessionContext} from "../providers/SessionProvider";
 import ChatMessageType from "../enums/ChatMessageType";
 import ChatMessageSchema from "../schemas/ChatMessageSchema";
+
+interface ChatMessageProps {
+    message: ChatMessageSchema
+    setImage: Dispatch<SetStateAction<string | null>>
+}
 
 /**
  * Renders a chat message, including the sender's name and avatar.
  * The message is displayed on the right if the sender is the current user, and on the left otherwise.
  *
  * @param {ChatMessageSchema} message - The message to render.
+ * @param {SetStateAction<string>} setImage - A function to set the image state when a message with an image is tapped.
  */
-export default function ChatMessage({message}: { message: ChatMessageSchema }): ReactElement {
+export default function ChatMessage({message, setImage}: ChatMessageProps): ReactElement {
     const {user} = useContext(SessionContext)
 
     /**
@@ -24,8 +30,11 @@ export default function ChatMessage({message}: { message: ChatMessageSchema }): 
                     backgroundColor: message.senderId === user?.uid ? "#00824b" : "#4b0082",
                 }}>{message.contents}</Text>
             case ChatMessageType.IMAGE:
-                // TODO: Allow users to tap on the image to view it in full screen.
-                return <Image source={{uri: message.contents}} style={styles.image} />
+                return (
+                    <Pressable onPress={() => setImage(message.contents)}>
+                        <Image source={{uri: message.contents}} style={styles.image} />
+                    </Pressable>
+                )
             default:
                 return <Text>Unknown message type</Text>
         }
