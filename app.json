@@ -40,6 +40,15 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "1574533329978791",
+          "clientToken": "7c28ba9b9b4adcc3a37dc7e8233107fb",
+          "displayName": "Pentia Chat",
+          "scheme": "fb1574533329978791"
+        }
       ]
     ],
     "extra": {

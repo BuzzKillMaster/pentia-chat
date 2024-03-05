@@ -1,8 +1,9 @@
-import {Pressable, SafeAreaView, Image, Text, StyleSheet, Alert, View} from 'react-native';
+import {Pressable, SafeAreaView, Image, Text, StyleSheet, View} from 'react-native';
 import {ReactElement, useContext} from "react";
 import {SessionContext} from "../src/providers/SessionProvider";
 import {Redirect} from "expo-router";
 import {Ionicons} from "@expo/vector-icons";
+import SocialSignInMethod from "../src/enums/SocialSignInMethod";
 
 /**
  * Renders the sign-in screen.
@@ -26,7 +27,7 @@ export default function SignIn(): ReactElement {
             <Pressable style={{
                 ...styles.button,
                 ...styles.googleButton,
-            }} onPress={signIn}>
+            }} onPress={() => signIn(SocialSignInMethod.GOOGLE)}>
                 <Image source={require('../assets/images/social/google.png')} style={styles.buttonIcon} />
                 <Text style={styles.buttonText}>Sign in with Google</Text>
             </Pressable>
@@ -34,7 +35,7 @@ export default function SignIn(): ReactElement {
             <Pressable style={{
                 ...styles.button,
                 ...styles.facebookButton,
-            }} onPress={() => {Alert.alert("Coming soon", "This feature will be implemented soon.")}}>
+            }} onPress={() => signIn(SocialSignInMethod.FACEBOOK)}>
                 <Ionicons name="logo-facebook" size={32} color={"#fff"} style={{
                     ...styles.buttonIcon,
                 }} />
