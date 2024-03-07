@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import storage from '@react-native-firebase/storage';
 import {ImagePickerResult} from "expo-image-picker";
 import ChatMessageType from "../enums/ChatMessageType";
+import messaging from '@react-native-firebase/messaging';
 
 /**
  * Renders an input field for sending messages in a chat group.
@@ -25,7 +26,7 @@ export default function ChatMessageInputField({group}: { group: string | undefin
 
     useEffect(() => {
         (async () => {
-            const wantsNotifications = await AsyncStorage.getItem("userWantsNotifications")
+            const wantsNotifications = await AsyncStorage.getItem("userWantsNotifications-" + group)
 
             switch (wantsNotifications) {
                 case "true":
@@ -82,10 +83,11 @@ export default function ChatMessageInputField({group}: { group: string | undefin
                     const permission = await Notifications.requestPermissionsAsync()
 
                     if (permission.status === "granted") {
-                        await AsyncStorage.setItem("userWantsNotifications", "true")
+                        await AsyncStorage.setItem("userWantsNotifications-" + group, "true")
                         setUserWantsNotifications(true)
+                        if (group) await messaging().subscribeToTopic(group)
                     } else if (permission.status === "denied") {
-                        await AsyncStorage.setItem("userWantsNotifications", "false")
+                        await AsyncStorage.setItem("userWantsNotifications-" + group, "false")
                         setUserWantsNotifications(false)
 
                         Alert.alert("Uh-oh!", "It looks like you've denied notifications. You can change this in your device's settings.")
