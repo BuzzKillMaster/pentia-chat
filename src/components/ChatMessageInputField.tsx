@@ -168,11 +168,11 @@ export default function ChatMessageInputField({group}: { group: string | undefin
         <View style={styles.container}>
             <View style={styles.imageOptionsContainer}>
                 <Pressable style={styles.iconButton} onPress={takePhoto}>
-                    <Ionicons name="camera" size={24} />
+                    <Ionicons name="camera" size={24} color={"#29928c"} />
                 </Pressable>
 
                 <Pressable style={styles.iconButton} onPress={pickImage}>
-                    <Ionicons name="image" size={24} />
+                    <Ionicons name="image" size={24} color={"#29928c"} />
                 </Pressable>
             </View>
 
@@ -190,7 +190,9 @@ export default function ChatMessageInputField({group}: { group: string | undefin
                     ...styles.iconButton,
                     ...styles.sendButton
                 }} onPress={() => sendMessage(messageContents)}>
-                    <Ionicons name="send" size={24} />
+                    <Ionicons name="send" size={24} color={
+                        messageContents.trim() === "" ? "#888" : "#29928c"
+                    } />
                 </Pressable>
             </View>
         </View>
