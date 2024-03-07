@@ -121,9 +121,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
 
-    // same as senderName, but separate for future customization
     timestamp: {
-        fontSize: 12,
+        fontSize: 10,
         opacity: 0.5,
         fontWeight: "500",
     },
