@@ -21,7 +21,6 @@
     "expo-dev-client": "~3.3.9",
     "expo-image-picker": "~14.7.1",
     "expo-linking": "~6.2.2",
-    "expo-notifications": "~0.27.6",
     "expo-router": "~3.4.7",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
