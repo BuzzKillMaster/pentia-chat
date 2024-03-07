@@ -166,26 +166,33 @@ export default function ChatMessageInputField({group}: { group: string | undefin
 
     return (
         <View style={styles.container}>
-            <Pressable style={styles.iconButton} onPress={takePhoto}>
-                <Ionicons name="camera" size={24} />
-            </Pressable>
+            <View style={styles.imageOptionsContainer}>
+                <Pressable style={styles.iconButton} onPress={takePhoto}>
+                    <Ionicons name="camera" size={24} />
+                </Pressable>
 
-            <Pressable style={styles.iconButton} onPress={pickImage}>
-                <Ionicons name="image" size={24} />
-            </Pressable>
+                <Pressable style={styles.iconButton} onPress={pickImage}>
+                    <Ionicons name="image" size={24} />
+                </Pressable>
+            </View>
 
-            <TextInput
-                style={styles.input}
-                placeholder={"Type a message"}
-                value={messageContents}
-                onChangeText={setMessageContents}
-                blurOnSubmit={false}
-                onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder={"Type a message"}
+                    value={messageContents}
+                    onChangeText={setMessageContents}
+                    blurOnSubmit={false}
+                    onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
+                />
 
-            <Pressable style={styles.iconButton} onPress={() => sendMessage(messageContents)}>
-                <Ionicons name="send" size={24} />
-            </Pressable>
+                <Pressable style={{
+                    ...styles.iconButton,
+                    ...styles.sendButton
+                }} onPress={() => sendMessage(messageContents)}>
+                    <Ionicons name="send" size={24} />
+                </Pressable>
+            </View>
         </View>
     )
 }
@@ -194,9 +201,17 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'stretch',
-        backgroundColor: '#fff',
-        borderTopWidth: 1,
-        borderTopColor: '#ddd',
+        padding: 10,
+    },
+
+    imageOptionsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    inputContainer: {
+        flex: 1,
+        marginHorizontal: 10,
     },
 
     iconButton: {
@@ -204,10 +219,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
+    sendButton: {
+        position: 'absolute',
+        right: 10,
+        bottom: 0,
+        top: 0,
+    },
+
     input: {
         width: '100%',
-        padding: 10,
-        backgroundColor: '#eee',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        backgroundColor: '#ddd',
         flexShrink: 1,
+        borderRadius: 25,
+        paddingRight: 24 + 20 + 10 // Send icon width + send icon padding + input padding
     },
 })
