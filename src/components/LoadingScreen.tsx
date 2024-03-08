@@ -9,7 +9,7 @@ import {ReactElement} from "react";
 export default function LoadingScreen(): ReactElement {
     return (
         <View style={styles.container}>
-            <ActivityIndicator size="large" color={"#f0f"} />
+            <ActivityIndicator size="large" color={"#29928c"} />
         </View>
     )
 }

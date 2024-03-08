@@ -100,8 +100,18 @@ export default function SessionProvider({children}: {children: ReactNode}): Reac
      * @returns {Promise<void>} Resolves when the sign out operation is complete.
      */
     const signOut = async (): Promise<void> => {
-        setIsLoading(true)
-        await auth().signOut()
+        Alert.alert("Sign out", "Are you sure you want to sign out?", [
+            {
+                text: "No thanks",
+            },
+            {
+                text: "Yes, please",
+                onPress: async () => {
+                    setIsLoading(true)
+                    await auth().signOut()
+                }
+            }]
+        )
     }
 
     return (

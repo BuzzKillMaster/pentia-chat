@@ -27,7 +27,8 @@ export default function ChatMessage({message, setImage}: ChatMessageProps): Reac
             case ChatMessageType.TEXT:
                 return <Text style={{
                     ...styles.message,
-                    backgroundColor: message.senderId === user?.uid ? "#00824b" : "#4b0082",
+                    backgroundColor: message.senderId === user?.uid ? "#2fa69f" : "#d3e5f4",
+                    color: message.senderId === user?.uid ? "#fff" : "#000",
                 }}>{message.contents}</Text>
             case ChatMessageType.IMAGE:
                 return (
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     image: {
         width: 200,
         height: 200,
-        borderRadius: 5,
+        borderRadius: 20,
     },
 
     senderInfoContainer: {
@@ -109,25 +110,29 @@ const styles = StyleSheet.create({
     },
 
     senderName: {
-        fontSize: 14,
+        fontSize: 12,
+        opacity: 0.5,
         fontWeight: "500",
     },
 
     senderAvatar: {
-        width: 25,
-        height: 25,
-        borderRadius: 5,
+        width: 20,
+        height: 20,
+        borderRadius: 20,
     },
 
     timestamp: {
-        fontSize: 12,
+        fontSize: 10,
+        opacity: 0.5,
+        fontWeight: "500",
     },
 
     message: {
         fontSize: 16,
-        padding: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
         color: "#fff",
-        borderRadius: 5,
+        borderRadius: 20,
         maxWidth: "80%",
     }
 })

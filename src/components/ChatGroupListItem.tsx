@@ -34,7 +34,7 @@ export default function ChatGroupListItem({group}: {group: ChatGroupSchema}): Re
                 <Text>{group.description}</Text>
             </View>
 
-            <Ionicons name="chevron-forward" size={24} color="black" />
+            <Ionicons name="chevron-forward" size={24} color="#29928c" />
         </Pressable>
     )
 }

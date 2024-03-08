@@ -1,10 +1,11 @@
-import {Alert, Text, FlatList, Pressable, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
+import {Alert, FlatList, Pressable, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
 import {ReactElement, useContext, useEffect, useState} from "react";
 import firestore from '@react-native-firebase/firestore';
 import ChatGroupSchema from "../../src/schemas/ChatGroupSchema";
 import ChatGroupListItem from "../../src/components/ChatGroupListItem";
 import {Stack} from "expo-router";
 import {SessionContext} from "../../src/providers/SessionProvider";
+import {Ionicons} from "@expo/vector-icons";
 
 /**
  * Render the home page of the application.
@@ -51,7 +52,7 @@ export default function HomePage(): ReactElement {
                 headerRight: () => {
                     return (
                         <Pressable onPress={signOut}>
-                            <Text>Sign out</Text>
+                            <Ionicons name={"log-out-outline"} size={24} color={"#d6595e"} />
                         </Pressable>
                     )
                 }

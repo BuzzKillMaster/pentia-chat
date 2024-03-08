@@ -17,33 +17,45 @@ export default function SignIn(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Image source={require('../assets/pc-icon.png')} style={styles.logo} />
+            <Image source={require('../assets/images/welcome-background.png')} style={styles.background} />
+            <View style={styles.overlay}></View>
 
-            <Text style={styles.title}>Welcome to Pentia Chat</Text>
-            <Text style={styles.description}>Join the community and start chatting with your friends.</Text>
-
-            <View style={styles.separator}></View>
-
-            <Pressable style={{
-                ...styles.button,
-                ...styles.googleButton,
-            }} onPress={() => signIn(SocialSignInMethod.GOOGLE)}>
-                <Image source={require('../assets/images/social/google.png')} style={styles.buttonIcon} />
-                <Text style={styles.buttonText}>Sign in with Google</Text>
-            </Pressable>
-
-            <Pressable style={{
-                ...styles.button,
-                ...styles.facebookButton,
-            }} onPress={() => signIn(SocialSignInMethod.FACEBOOK)}>
-                <Ionicons name="logo-facebook" size={32} color={"#fff"} style={{
-                    ...styles.buttonIcon,
-                }} />
+            <View style={styles.content}>
                 <Text style={{
-                    ...styles.buttonText,
-                    color: '#fff',
-                }}>Sign in with Facebook</Text>
-            </Pressable>
+                    ...styles.text,
+                    ...styles.title,
+                }}>
+                    Join the conversation and share your views.
+                </Text>
+
+                <Text style={{
+                    ...styles.text,
+                    ...styles.description
+                }}>
+                    Discover communities and connect with people from around the world.
+                </Text>
+
+                <Pressable style={{
+                    ...styles.button,
+                    ...styles.googleButton,
+                }} onPress={() => signIn(SocialSignInMethod.GOOGLE)}>
+                    <Image source={require('../assets/images/social/google.png')} style={styles.buttonIcon} />
+                    <Text style={styles.buttonText}>Sign in with Google</Text>
+                </Pressable>
+
+                <Pressable style={{
+                    ...styles.button,
+                    ...styles.facebookButton,
+                }} onPress={() => signIn(SocialSignInMethod.FACEBOOK)}>
+                    <Ionicons name="logo-facebook" size={32} color={"#fff"} style={{
+                        ...styles.buttonIcon,
+                    }} />
+                    <Text style={{
+                        ...styles.buttonText,
+                        color: '#fff',
+                    }}>Sign in with Facebook</Text>
+                </Pressable>
+            </View>
         </SafeAreaView>
     )
 }
@@ -51,32 +63,44 @@ export default function SignIn(): ReactElement {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 16,
+        justifyContent: 'flex-end',
     },
 
-    logo: {
-        width: 200,
-        height: 200,
+    content: {
+        padding: 24,
+        gap: 16
+    },
+
+    background: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+    },
+
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+    },
+
+    text: {
+        color: "#fff",
+        textShadowColor: 'rgba(0, 0, 0, 1)',
+        textShadowOffset: {width: 2, height: 2},
+        textShadowRadius: 8,
     },
 
     title: {
-        fontSize: 24,
         fontWeight: 'bold',
+        fontSize: 36,
     },
 
     description: {
-        fontSize: 16,
-        textAlign: 'center',
-        maxWidth: "80%"
-    },
-
-    separator: {
-        marginVertical: 12,
-        height: 1,
-        width: '50%',
-        backgroundColor: '#eee',
+        fontSize: 20,
+        fontWeight: "500",
+        maxWidth: "80%",
     },
 
     button: {
@@ -85,12 +109,11 @@ const styles = StyleSheet.create({
         padding: 16,
         paddingHorizontal: 24,
         borderRadius: 50,
+        justifyContent: 'center',
     },
 
     googleButton: {
         backgroundColor: '#fff',
-        borderStyle: 'solid',
-        borderWidth: 1,
     },
 
     facebookButton: {
