@@ -4,6 +4,7 @@ import {SessionContext} from "../src/providers/SessionProvider";
 import {Redirect} from "expo-router";
 import {Ionicons} from "@expo/vector-icons";
 import SocialSignInMethod from "../src/enums/SocialSignInMethod";
+import {StatusBar} from "expo-status-bar";
 
 /**
  * Renders the sign-in screen.
@@ -17,6 +18,7 @@ export default function SignIn(): ReactElement {
 
     return (
         <View style={styles.container}>
+            <StatusBar style="light" />
             <Image source={require('../assets/images/welcome-background.png')} style={styles.background} />
             <View style={styles.overlay}></View>
 
