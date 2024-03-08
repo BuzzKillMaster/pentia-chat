@@ -6,6 +6,7 @@ import ChatGroupListItem from "../../src/components/chat/ChatGroupListItem";
 import {Stack} from "expo-router";
 import {SessionContext} from "../../src/providers/SessionProvider";
 import {Ionicons} from "@expo/vector-icons";
+import {StatusBar} from "expo-status-bar";
 
 /**
  * Render the home page of the application.
@@ -47,6 +48,8 @@ export default function HomePage(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar style={"dark"} />
+
             <Stack.Screen options={{
                 title: "Chat Groups",
                 headerRight: () => {

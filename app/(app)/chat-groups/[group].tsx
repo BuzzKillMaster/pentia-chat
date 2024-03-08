@@ -8,6 +8,7 @@ import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocu
 import ChatMessageSchema from "../../../src/schemas/ChatMessageSchema";
 import EmptyStateScreen from "../../../src/components/utility/EmptyStateScreen";
 import LightBoxComponent from "../../../src/components/LightBoxComponent";
+import {StatusBar} from "expo-status-bar";
 
 const MESSAGES_PER_PAGE = 50
 
@@ -83,6 +84,8 @@ export default function ChatGroup(): ReactElement {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar style={"dark"} />
+
             <Stack.Screen
                 options={{
                     title: name,
