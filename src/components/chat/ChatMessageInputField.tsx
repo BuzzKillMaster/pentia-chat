@@ -1,5 +1,5 @@
 import {ReactElement, useContext, useEffect, useState} from "react";
-import {Alert, Pressable, StyleSheet, TextInput, View} from "react-native";
+import {Alert, Platform, Pressable, StyleSheet, TextInput, View} from "react-native";
 import {SessionContext} from "../../providers/SessionProvider";
 import firestore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
 
     input: {
         width: '100%',
-        paddingVertical: 10,
+        paddingVertical: Platform.OS === "ios" ? 15 : 10,
         paddingHorizontal: 15,
         backgroundColor: '#ddd',
         flexShrink: 1,
