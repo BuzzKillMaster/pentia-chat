@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         color: "#fff",
         borderRadius: 20,
+        overflow: "hidden",
         maxWidth: "80%",
     }
 })
