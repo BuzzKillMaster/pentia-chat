@@ -1,5 +1,5 @@
 import {ReactElement, useContext, useEffect, useState} from "react";
-import {Alert, Platform, Pressable, StyleSheet, TextInput, View} from "react-native";
+import {Alert, KeyboardAvoidingView, Platform, Pressable, StyleSheet, TextInput, View} from "react-native";
 import {SessionContext} from "../../providers/SessionProvider";
 import firestore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +10,7 @@ import storage from '@react-native-firebase/storage';
 import {ImagePickerResult} from "expo-image-picker";
 import ChatMessageType from "../../enums/ChatMessageType";
 import messaging from '@react-native-firebase/messaging';
+import {useHeaderHeight} from "@react-navigation/elements";
 
 /**
  * Renders an input field for sending messages in a chat group.
@@ -20,6 +21,7 @@ import messaging from '@react-native-firebase/messaging';
  */
 export default function ChatMessageInputField({group}: { group: string | undefined }): ReactElement {
     const {user} = useContext(SessionContext)
+    const headerHeight = useHeaderHeight()
 
     const [messageContents, setMessageContents] = useState<string>("")
     const [userWantsNotifications, setUserWantsNotifications] = useState<boolean | undefined | null>()
@@ -167,45 +169,57 @@ export default function ChatMessageInputField({group}: { group: string | undefin
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.imageOptionsContainer}>
-                <Pressable style={styles.iconButton} onPress={takePhoto}>
-                    <Ionicons name="camera" size={24} color={"#29928c"} />
-                </Pressable>
+        <KeyboardAvoidingView
+            behavior={"padding"}
+            keyboardVerticalOffset={headerHeight}
+            enabled={Platform.OS === "ios"}
+            style={styles.keyboardAvoidingWrapper}
+        >
+            <View style={styles.container}>
+                <View style={styles.imageOptionsContainer}>
+                    <Pressable style={styles.iconButton} onPress={takePhoto}>
+                        <Ionicons name="camera" size={24} color={"#29928c"} />
+                    </Pressable>
 
-                <Pressable style={styles.iconButton} onPress={pickImage}>
-                    <Ionicons name="image" size={24} color={"#29928c"} />
-                </Pressable>
+                    <Pressable style={styles.iconButton} onPress={pickImage}>
+                        <Ionicons name="image" size={24} color={"#29928c"} />
+                    </Pressable>
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder={"Type a message"}
+                        value={messageContents}
+                        onChangeText={setMessageContents}
+                        blurOnSubmit={false}
+                        onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
+                    />
+
+                    <Pressable style={{
+                        ...styles.iconButton,
+                        ...styles.sendButton
+                    }} onPress={() => sendMessage(messageContents)}>
+                        <Ionicons name="send" size={24} color={
+                            messageContents.trim() === "" ? "#888" : "#29928c"
+                        } />
+                    </Pressable>
+                </View>
             </View>
-
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder={"Type a message"}
-                    value={messageContents}
-                    onChangeText={setMessageContents}
-                    blurOnSubmit={false}
-                    onSubmitEditing={({nativeEvent}) => sendMessage(nativeEvent.text)}
-                />
-
-                <Pressable style={{
-                    ...styles.iconButton,
-                    ...styles.sendButton
-                }} onPress={() => sendMessage(messageContents)}>
-                    <Ionicons name="send" size={24} color={
-                        messageContents.trim() === "" ? "#888" : "#29928c"
-                    } />
-                </Pressable>
-            </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
+    keyboardAvoidingWrapper: {
+        width: "100%",
+    },
+
     container: {
         flexDirection: 'row',
         alignItems: 'stretch',
         padding: 10,
+        width: "100%",
     },
 
     imageOptionsContainer: {
