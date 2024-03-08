@@ -1,6 +1,7 @@
 import {Redirect, Stack} from "expo-router";
 import {ReactElement, useContext} from "react";
 import {SessionContext} from "../../src/providers/SessionProvider";
+import AnimatedView from "../../src/components/utility/AnimatedView";
 
 /**
  * AppLayout component
@@ -16,5 +17,9 @@ export default function AppLayout(): ReactElement {
 
     if (!user) return <Redirect href={"/sign-in"} />
 
-    return <Stack />
+    return (
+        <AnimatedView>
+            <Stack />
+        </AnimatedView>
+    )
 }
