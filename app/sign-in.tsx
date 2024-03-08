@@ -16,47 +16,49 @@ export default function SignIn(): ReactElement {
     if (user) return <Redirect href={"/"} />
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Image source={require('../assets/images/welcome-background.png')} style={styles.background} />
             <View style={styles.overlay}></View>
 
-            <View style={styles.content}>
-                <Text style={{
-                    ...styles.text,
-                    ...styles.title,
-                }}>
-                    Join the conversation and share your views.
-                </Text>
-
-                <Text style={{
-                    ...styles.text,
-                    ...styles.description
-                }}>
-                    Discover communities and connect with people from around the world.
-                </Text>
-
-                <Pressable style={{
-                    ...styles.button,
-                    ...styles.googleButton,
-                }} onPress={() => signIn(SocialSignInMethod.GOOGLE)}>
-                    <Image source={require('../assets/images/social/google.png')} style={styles.buttonIcon} />
-                    <Text style={styles.buttonText}>Sign in with Google</Text>
-                </Pressable>
-
-                <Pressable style={{
-                    ...styles.button,
-                    ...styles.facebookButton,
-                }} onPress={() => signIn(SocialSignInMethod.FACEBOOK)}>
-                    <Ionicons name="logo-facebook" size={32} color={"#fff"} style={{
-                        ...styles.buttonIcon,
-                    }} />
+            <SafeAreaView>
+                <View style={styles.content}>
                     <Text style={{
-                        ...styles.buttonText,
-                        color: '#fff',
-                    }}>Sign in with Facebook</Text>
-                </Pressable>
-            </View>
-        </SafeAreaView>
+                        ...styles.text,
+                        ...styles.title,
+                    }}>
+                        Join the conversation and share your views.
+                    </Text>
+
+                    <Text style={{
+                        ...styles.text,
+                        ...styles.description
+                    }}>
+                        Discover communities and connect with people from around the world.
+                    </Text>
+
+                    <Pressable style={{
+                        ...styles.button,
+                        ...styles.googleButton,
+                    }} onPress={() => signIn(SocialSignInMethod.GOOGLE)}>
+                        <Image source={require('../assets/images/social/google.png')} style={styles.buttonIcon} />
+                        <Text style={styles.buttonText}>Sign in with Google</Text>
+                    </Pressable>
+
+                    <Pressable style={{
+                        ...styles.button,
+                        ...styles.facebookButton,
+                    }} onPress={() => signIn(SocialSignInMethod.FACEBOOK)}>
+                        <Ionicons name="logo-facebook" size={32} color={"#fff"} style={{
+                            ...styles.buttonIcon,
+                        }} />
+                        <Text style={{
+                            ...styles.buttonText,
+                            color: '#fff',
+                        }}>Sign in with Facebook</Text>
+                    </Pressable>
+                </View>
+            </SafeAreaView>
+        </View>
     )
 }
 
