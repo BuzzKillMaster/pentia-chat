@@ -159,11 +159,23 @@ export default function ChatMessageInputField({group}: { group: string | undefin
     /**
      * Opens the camera and allows the user to take a photo.
      */
-    const takePhoto = () => {
+    const takePhoto = async () => {
+        const permission = await ImagePicker.getCameraPermissionsAsync()
+
+        if (!permission.granted) {
+            const newPermission = await ImagePicker.requestCameraPermissionsAsync()
+
+            if (!newPermission.granted) {
+                Alert.alert("Uh-oh!", "It looks like you've denied camera access. You can change this in your device's settings.")
+                return
+            }
+        }
+
         ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             quality: 1,
-        }).catch(_ => {
+        }).catch(error => {
+            console.log(error)
             Alert.alert("Uh-oh!", "It looks like we were unable to open your camera. Please try again later.")
         }).then(uploadImagePickerResult)
     }
