@@ -1,6 +1,6 @@
 import {ReactElement, useContext, useEffect, useState} from "react";
 import {Alert, Pressable, StyleSheet, TextInput, View} from "react-native";
-import {SessionContext} from "../providers/SessionProvider";
+import {SessionContext} from "../../providers/SessionProvider";
 import firestore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from 'expo-notifications';
@@ -8,7 +8,7 @@ import {Ionicons} from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import storage from '@react-native-firebase/storage';
 import {ImagePickerResult} from "expo-image-picker";
-import ChatMessageType from "../enums/ChatMessageType";
+import ChatMessageType from "../../enums/ChatMessageType";
 import messaging from '@react-native-firebase/messaging';
 
 /**

@@ -1,8 +1,8 @@
 import {Dispatch, ReactElement, SetStateAction, useContext} from "react";
 import {View, Text, Image, StyleSheet, Pressable} from "react-native";
-import {SessionContext} from "../providers/SessionProvider";
-import ChatMessageType from "../enums/ChatMessageType";
-import ChatMessageSchema from "../schemas/ChatMessageSchema";
+import {SessionContext} from "../../providers/SessionProvider";
+import ChatMessageType from "../../enums/ChatMessageType";
+import ChatMessageSchema from "../../schemas/ChatMessageSchema";
 
 interface ChatMessageProps {
     message: ChatMessageSchema

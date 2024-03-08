@@ -2,7 +2,7 @@ import {createContext, ReactElement, ReactNode, useEffect, useState} from "react
 import auth, {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import {Alert} from "react-native";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen from "../components/utility/LoadingScreen";
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import SocialSignInMethod from "../enums/SocialSignInMethod";
 

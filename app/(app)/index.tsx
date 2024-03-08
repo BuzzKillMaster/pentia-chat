@@ -2,7 +2,7 @@ import {Alert, FlatList, Pressable, RefreshControl, SafeAreaView, StyleSheet} fr
 import {ReactElement, useContext, useEffect, useState} from "react";
 import firestore from '@react-native-firebase/firestore';
 import ChatGroupSchema from "../../src/schemas/ChatGroupSchema";
-import ChatGroupListItem from "../../src/components/ChatGroupListItem";
+import ChatGroupListItem from "../../src/components/chat/ChatGroupListItem";
 import {Stack} from "expo-router";
 import {SessionContext} from "../../src/providers/SessionProvider";
 import {Ionicons} from "@expo/vector-icons";

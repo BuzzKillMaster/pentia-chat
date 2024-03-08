@@ -1,4 +1,4 @@
-import ChatGroupSchema from "../schemas/ChatGroupSchema";
+import ChatGroupSchema from "../../schemas/ChatGroupSchema";
 import {ReactElement} from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {useRouter} from "expo-router";

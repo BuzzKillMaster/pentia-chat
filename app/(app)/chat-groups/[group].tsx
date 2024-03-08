@@ -2,11 +2,11 @@ import {ReactElement, useCallback, useEffect, useState} from "react";
 import {StyleSheet, SafeAreaView, Alert, FlatList, ActivityIndicator} from "react-native";
 import {Stack, useLocalSearchParams} from "expo-router";
 import firestore from "@react-native-firebase/firestore";
-import ChatMessage from "../../../src/components/ChatMessage";
-import ChatMessageInputField from "../../../src/components/ChatMessageInputField";
+import ChatMessage from "../../../src/components/chat/ChatMessage";
+import ChatMessageInputField from "../../../src/components/chat/ChatMessageInputField";
 import firestoreDocumentToChatMessage from "../../../src/utilities/firestoreDocumentToChatMessage";
 import ChatMessageSchema from "../../../src/schemas/ChatMessageSchema";
-import EmptyStateScreen from "../../../src/components/EmptyStateScreen";
+import EmptyStateScreen from "../../../src/components/utility/EmptyStateScreen";
 import LightBoxComponent from "../../../src/components/LightBoxComponent";
 
 const MESSAGES_PER_PAGE = 50
