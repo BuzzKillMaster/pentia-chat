@@ -17,12 +17,14 @@ exports.onMessageCreated = functions.firestore
 
         const message = snapshot.data()
 
+        // TODO: Have someone skilled at RegEx review this. I mean, what even is this? 😂
+        const isURL = message?.contents?.match(/(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/)
+
         await admin.messaging().send({
             topic: context.params.groupId,
             notification: {
                 title: message?.senderName || "New Message",
-                // TODO: Find a better way to make this check, as it can be tricked, for example when users share a URL.
-                body: message?.contents?.startsWith("http")  ? message?.contents || "New Message" : "Sent an image",
+                body: isURL ? "Sent an attachment" : message?.contents || "New Message",
             },
             data: {
                 groupId: context.params.groupId,
