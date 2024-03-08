@@ -50,6 +50,14 @@
           "displayName": "Pentia Chat",
           "scheme": "fb1574533329978791"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "extra": {
