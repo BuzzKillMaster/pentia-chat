@@ -57,7 +57,6 @@ export default function ChatGroup(): ReactElement {
 
         const lastMessage = messages[messages.length - 1]
 
-        // TODO: Ensure that this does not throw any errors when the total number of messages is divisible by MESSAGES_PER_PAGE
         const snapshot = await firestore()
             .collection("chat-groups")
             .doc(group)
