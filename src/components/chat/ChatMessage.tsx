@@ -89,7 +89,8 @@ export default function ChatMessage({message, setImage}: ChatMessageProps): Reac
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 16,
+        marginHorizontal: 20,
+        marginVertical: 10,
         gap: 8,
     },
 
